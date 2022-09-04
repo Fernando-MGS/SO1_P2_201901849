@@ -1,0 +1,20 @@
+.App {
+  text-align: center;
+}
+
+.dataUsage{
+  width: 80%;
+  margin: 30px auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cpu{
+  width: 40%;
+  background-color: rgba(6, 230, 99, 0.603);
+}
+
+.ram{
+  width:40%;
+  background-color: brown;
+}
