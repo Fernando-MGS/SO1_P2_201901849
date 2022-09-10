@@ -1,0 +1,1 @@
+cmd_/home/fernando/Universidad/SOPES/SO1_P2_201901849/VM2/modulos/mod2/Module.symvers := sed 's/\.ko$$/\.o/' /home/fernando/Universidad/SOPES/SO1_P2_201901849/VM2/modulos/mod2/modules.order | scripts/mod/modpost -m -a  -o /home/fernando/Universidad/SOPES/SO1_P2_201901849/VM2/modulos/mod2/Module.symvers -e -i Module.symvers   -T -

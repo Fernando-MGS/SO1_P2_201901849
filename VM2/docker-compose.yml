@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  backend:
+    container_name: backend
+    restart: always
+    image: fernandomgs/backend_p2_test
+    build: ./backend
+    ports:
+      - "4000:4000"
