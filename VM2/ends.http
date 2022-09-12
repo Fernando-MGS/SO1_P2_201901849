@@ -2,6 +2,35 @@ GET http://localhost:4000/getCPU
 Content-Type: application/json
 
 ###
+GET http://localhost:4000/getRAM
+Content-Type: application/json
+
+###
+POST http://localhost:4000/insertRAM
+Content-Type: application/json
+
+{
+    "free": 65,
+    "occupied": 35,
+    "aux": ""
+}
+
+###
+GET http://localhost:4000/getCPU2
+Content-Type: application/json
+
+###
+POST http://localhost:4000/insertCPU
+Content-Type: application/json
+
+{
+    "free": 45,
+    "occupied": 55,
+    "aux": ""
+}
+
+
+###
 
 POST http://localhost:4000/readCPU
 Content-Type: application/json

@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  frontend:
+    container_name: frontend
+    restart: always
+    image: fernandomgs/frontend_p2
+    build: ./frontend
+    ports:
+      - "3000:3000"
