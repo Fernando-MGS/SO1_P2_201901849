@@ -7,13 +7,13 @@
 //Header necesario porque se usara proc_fs
 #include <linux/proc_fs.h>
 /* for copy_from_user */
-#include <asm/uaccess.h>	
+#include <asm/uaccess.h>        
 /* Header para usar la lib seq_file y manejar el archivo en /proc*/
 #include <linux/seq_file.h>
 
-//#include <linux/sys.h>
+#include <linux/sys.h>
 
-#include <sys/sysinfo.h>
+#include <linux/hugetlb.h>
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Modulo para medir uso de la RAM");
@@ -23,12 +23,11 @@ MODULE_AUTHOR("Fernando Mauricio Gomez Santos");
 static int escribir_archivo(struct seq_file *archivo, void *v)
 {   
     struct sysinfo si;
-    sysinfo (&si);
-    seq_printf(archivo, "{\"data\":\"{");
-    seq_printf(archivo, "\"free\":",si.freeram,"\n");
-    seq_printf(archivo, "\"total\":",si.totalram,"\n");
-    seq_printf(archivo, "\"}\n");
-    seq_printf(archivo, "\"}");
+    si_meminfo(&si);
+    seq_printf(archivo, "{\n");
+    seq_printf(archivo, "\"free\": %lu\n",si.freeram);
+    seq_printf(archivo, "\"total\": %lu\n",si.totalram);
+    seq_printf(archivo, "}");
     return 0;
 }
 
@@ -48,17 +47,26 @@ static struct proc_ops operaciones =
 //Funcion a ejecuta al insertar el modulo en el kernel con insmod
 static int _insert(void)
 {
-    proc_create("ram201901849", 0, NULL, &operaciones);
-    printk(KERN_INFO "201901849\n");
+    proc_create("ram_201901849", 0, NULL, &operaciones);
+    printk(KERN_INFO "*******************************\n");
+    printk(KERN_INFO "*******************************\n");
+    printk(KERN_INFO "************201901849**********\n");
+    printk(KERN_INFO "*******************************\n");
+    printk(KERN_INFO "*******************************\n");
     return 0;
 }
 
 //Funcion a ejecuta al remover el modulo del kernel con rmmod
 static void _remove(void)
 {
-    remove_proc_entry("ejemplo_modulo", NULL);
-    printk(KERN_INFO "Sistemas Operativos 1\n");
+    remove_proc_entry("ram_201901849", NULL);
+    printk(KERN_INFO "*******************************\n");
+    printk(KERN_INFO "*******************************\n");
+    printk(KERN_INFO "*****SISTEMAS-OPERATIVOS-1*****\n");
+    printk(KERN_INFO "*******************************\n");
+    printk(KERN_INFO "*******************************\n");
 }
 
 module_init(_insert);
+
 module_exit(_remove);

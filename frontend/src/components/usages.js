@@ -1,49 +1,62 @@
 import { Pie } from "react-chartjs-2";
-import { useState } from 'react';
+
 import '../App.css'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 
-const DataUsage = () => {
-    const data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+const DataUsage = (props) => {
+    const dataCpu = {
+        labels: ['% Ocupado', '% Libre'],
         datasets: [
             {
                 label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                data: [props.cpu.occupied, props.cpu.free],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(230, 6, 6, 1)',
+                    '#8fc1ec'
                 ],
                 borderColor: [
                     'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
+                    'rgba(54, 162, 235, 1)'
                 ],
                 borderWidth: 1,
             },
         ],
     };
+
+    const dataRam = {
+        labels: ['% Ocupado', '% Libre'],
+        datasets: [
+            {
+                label: '# of Votes',
+                data: [props.ram.occupied, props.ram.free],
+                backgroundColor: [
+                    'rgba(230, 6, 6, 1)',
+                    '#8fc1ec'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)'
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
+
     return (
         <div className='dataUsage'>
             <div className="cpu">
                 <figure className="figure">
-                    <Pie data={data} />
-                    <figcaption className="figure-caption">CPU</figcaption>
+                    <Pie data={dataCpu} />
+                    <br/>
+                    <figcaption className="figure-caption"><h3>CPU</h3></figcaption>
                 </figure>
 
             </div>
             <div className="ram">
                 <figure className="figure">
-                    <Pie data={data} />
+                    <Pie data={dataRam} />
                     <br/>
                     <figcaption className="figure-caption"><h3>RAM</h3></figcaption>
                 </figure>

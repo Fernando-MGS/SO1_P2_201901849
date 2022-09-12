@@ -1,20 +1,44 @@
-.App {
+html {
+  background-color: rgba(111, 70, 121, 0.527);
+}
+
+.App{
   text-align: center;
+  background-color: rgba(111, 70, 121, 0.527);
+  color: aliceblue;
 }
 
 .dataUsage{
-  width: 80%;
+  width: 83%;
   margin: 30px auto;
   display: flex;
   justify-content: space-between;
 }
 
 .cpu{
-  width: 40%;
+  width: 50%;
   background-color: rgba(6, 230, 99, 0.603);
+  border-radius: 4px;
+}
+
+.figure{
+  color: aliceblue!important;
 }
 
 .ram{
-  width:40%;
-  background-color: brown;
+  width:50%;
+  background-color: rgba(6, 230, 36, 0.603);
+  border-radius: 4px;
 }
+
+.generalData{
+  width: 82.5%;
+  margin: 5px auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-content: center;
+  background-color: rgba(230, 6, 6, 0.603);
+  border-radius: 6px;
+}
+

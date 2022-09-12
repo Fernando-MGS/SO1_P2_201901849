@@ -34,7 +34,7 @@ static int escribir_archivo(struct seq_file *archivo, void *v)
         uid_t uid = __kuid_val(task_uid(cpu));
         seq_printf(archivo, "{\n\"pid\": \"%d\",\n", cpu->pid);
         seq_printf(archivo, "\"comm\": \" %s\",\n", cpu->comm);
-        seq_printf(archivo, "\"state\": \"%u\",\n", cpu->__state);
+        seq_printf(archivo, "\"state\": \"%ld\",\n", cpu->state);
         seq_printf(archivo, "\"owner\": \"%d\",\n", uid);
         seq_printf(archivo, "\"child\": [");
         seq_printf(archivo, "\n");
