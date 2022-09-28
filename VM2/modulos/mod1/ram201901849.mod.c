@@ -1,46 +1,72 @@
 #include <linux/module.h>
-#define INCLUDE_VERMAGIC
-#include <linux/build-salt.h>
-#include <linux/elfnote-lto.h>
-#include <linux/vermagic.h>
-#include <linux/compiler.h>
+// para usar KERN_INFO
+#include <linux/kernel.h>
 
-BUILD_SALT;
-BUILD_LTO_INFO;
+//Header para los macros module_init y module_exit
+#include <linux/init.h>
+//Header necesario porque se usara proc_fs
+#include <linux/proc_fs.h>
+/* for copy_from_user */
+#include <asm/uaccess.h>        
+/* Header para usar la lib seq_file y manejar el archivo en /proc*/
+#include <linux/seq_file.h>
 
-MODULE_INFO(vermagic, VERMAGIC_STRING);
-MODULE_INFO(name, KBUILD_MODNAME);
+#include <linux/sys.h>
 
-__visible struct module __this_module
-__section(".gnu.linkonce.this_module") = {
-	.name = KBUILD_MODNAME,
-	.init = init_module,
-#ifdef CONFIG_MODULE_UNLOAD
-	.exit = cleanup_module,
-#endif
-	.arch = MODULE_ARCH_INIT,
+#include <linux/hugetlb.h>
+
+MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Modulo para medir uso de la RAM");
+MODULE_AUTHOR("Fernando Mauricio Gomez Santos");
+
+//Funcion que se ejecutara cada vez que se lea el archivo con el comando CAT
+static int escribir_archivo(struct seq_file *archivo, void *v)
+{   
+    struct sysinfo si;
+    si_meminfo(&si);
+    seq_printf(archivo, "{\n");
+    seq_printf(archivo, "\"free\": %lu,\n",si.freeram);
+    seq_printf(archivo, "\"total\": %lu\n",si.totalram);
+    seq_printf(archivo, "}\n");
+    return 0;
+}
+
+//Funcion que se ejecutara cada vez que se lea el archivo con el comando CAT
+static int al_abrir(struct inode *inode, struct file *file)
+{
+    return single_open(file, escribir_archivo, NULL);
+}
+
+//Si el kernel es 5.6 o mayor se usa la estructura proc_ops
+static struct proc_ops operaciones =
+{
+    .proc_open = al_abrir,
+    .proc_read = seq_read
 };
 
-#ifdef CONFIG_RETPOLINE
-MODULE_INFO(retpoline, "Y");
-#endif
+//Funcion a ejecuta al insertar el modulo en el kernel con insmod
+static int _insert(void)
+{
+    proc_create("ram_201901849", 0, NULL, &operaciones);
+    printk(KERN_INFO "*******************************\n");
+    printk(KERN_INFO "*******************************\n");
+    printk(KERN_INFO "************201901849**********\n");
+    printk(KERN_INFO "*******************************\n");
+    printk(KERN_INFO "*******************************\n"); 
+    return 0;
+}
 
-static const struct modversion_info ____versions[]
-__used __section("__versions") = {
-	{ 0xcb440b5e, "module_layout" },
-	{ 0x6b6889b6, "seq_read" },
-	{ 0xa93bfc46, "remove_proc_entry" },
-	{ 0x92997ed8, "_printk" },
-	{ 0xe832bcc7, "proc_create" },
-	{ 0xd0da656b, "__stack_chk_fail" },
-	{ 0xe7a4bdfe, "seq_printf" },
-	{ 0x40c7247c, "si_meminfo" },
-	{ 0x5b8239ca, "__x86_return_thunk" },
-	{ 0xc1025998, "single_open" },
-	{ 0xbdfb6dbb, "__fentry__" },
-};
+//Funcion a ejecuta al remover el modulo del kernel con rmmod
+static void _remove(void)
+{
+    remove_proc_entry("ram_201901849", NULL);
+    printk(KERN_INFO "*******************************\n");
+    printk(KERN_INFO "*******************************\n");
+    printk(KERN_INFO "*****SISTEMAS-OPERATIVOS-1*****\n");
+    printk(KERN_INFO "*******************************\n");
+	    printk(KERN_INFO "*******************************\n");    
+}
 
-MODULE_INFO(depends, "");
+module_init(_insert);
 
-
-MODULE_INFO(srcversion, "FAECE34503C7C2CB27046F9");
+module_exit(_remove);

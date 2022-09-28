@@ -27,14 +27,13 @@ struct list_head * lstProcess;
 //Funcion que se ejecutara cada vez que se lea el archivo con el comando CAT
 static int escribir_archivo(struct seq_file *archivo, void *v)
 {   
-     seq_printf(archivo, "{");
      seq_printf(archivo, "[");
      seq_printf(archivo, "\n");
      for_each_process(cpu){
         uid_t uid = __kuid_val(task_uid(cpu));
-        seq_printf(archivo, "{\n\"pid\": \"%d\",\n", cpu->pid);
+                seq_printf(archivo, "{\n\"pid\": \"%d\",\n", cpu->pid);
         seq_printf(archivo, "\"comm\": \" %s\",\n", cpu->comm);
-        seq_printf(archivo, "\"state\": \"%ld\",\n", cpu->state);
+        seq_printf(archivo, "\"state\": \"%u\",\n", cpu->__state);
         seq_printf(archivo, "\"owner\": \"%d\",\n", uid);
         seq_printf(archivo, "\"child\": [");
         seq_printf(archivo, "\n");
@@ -42,17 +41,21 @@ static int escribir_archivo(struct seq_file *archivo, void *v)
             child = list_entry(lstProcess, struct task_struct, sibling);
             uid_t uid_c = __kuid_val(task_uid(child));
             seq_printf(archivo, "   ");
-            seq_printf(archivo, "{\"pid\": \"%d\",\n ", child->pid);
-            seq_printf(archivo, "\"comm\": \"%s\",\n ", child->comm);
-            seq_printf(archivo, "\"state\": \"%u\",\n ", cpu->__state);
-            seq_printf(archivo, "\"owner\": \"%d\"\n ", uid_c);
+            seq_printf(archivo, "{\"pid\": \"%d\",\n", child->pid);
+            seq_printf(archivo, "   ");
+            seq_printf(archivo, "\"comm\": \"%s\",\n", child->comm);
+            seq_printf(archivo, "   ");
+            seq_printf(archivo, "\"state\": \"%u\",\n", cpu->__state);
+            seq_printf(archivo, "   ");
+            seq_printf(archivo, "\"owner\": \"%d\"\n", uid_c);
+            seq_printf(archivo, "   ");
             seq_printf(archivo, "},\n");
         }
     seq_printf(archivo, "]");
     seq_printf(archivo, "},\n");
     }
     seq_printf(archivo, "]");
-    seq_printf(archivo, "}");
+    seq_printf(archivo, "\n");
     return 0;
 }
 
@@ -72,16 +75,24 @@ static struct proc_ops operaciones =
 //Funcion a ejecuta al insertar el modulo en el kernel con insmod
 static int _insert(void)
 {
-    proc_create("ejemplo", 0, NULL, &operaciones);
-    printk(KERN_INFO "Mensaje al insertar modulo, Laboratorio SO 1\n");
+    proc_create("cpu201901849", 0, NULL, &operaciones);
+    printk(KERN_INFO "*********************************************\n");
+    printk(KERN_INFO "*********************************************\n");
+    printk(KERN_INFO "***************Fernando Gomez****************\n");
+    printk(KERN_INFO "*********************************************\n");
+    printk(KERN_INFO "*********************************************\n");
     return 0;
 }
 
 //Funcion a ejecuta al remover el modulo del kernel con rmmod
 static void _remove(void)
 {
-    remove_proc_entry("ejemplo", NULL);
-    printk(KERN_INFO "Mensaje al remover modulo, Laboratorio SO 1\n");
+    remove_proc_entry("cpu201901849", NULL);
+    printk(KERN_INFO "*********************************************\n");
+    printk(KERN_INFO "*********************************************\n");
+    printk(KERN_INFO "****************Segundo Semestre*************\n");
+    printk(KERN_INFO "*********************************************\n");
+    printk(KERN_INFO "*********************************************\n");
 }
 
 module_init(_insert);
